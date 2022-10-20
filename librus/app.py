@@ -30,7 +30,7 @@ users = {
 def index():
     return render_template('index.html', title="Strona głown")
 
-@app.route('/login', method=["POST","GET"])
+@app.route('/login', methods=["POST","GET"])
 def login():
     loginForm = LoginForm()
     if loginForm.validate_on_submit():
@@ -38,21 +38,17 @@ def login():
         userPassword = loginForm.userPassword.data
         if(userLogin == users[1]['userLogin'] and userPassword == users[1]['userPass']):
             session['userLogin'] = userLogin
-            return redirect('dashboard')
+            return redirect('/dashboard')
     return render_template("login.html", title="Logowanie", form=loginForm, userLogin=session.get('userLogin'))
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template("dashboard", title="Dashboard", userLogin=session.get("userLogin"))
+    return render_template("dashboard.html", title="Dashboard", userLogin=session.get("userLogin"))
 
-
-@app.errorhandler(404)
-def pageNotFound(error):
-    return render_template('404.html', title='404'), 404
-@app.errorhandler(500)
-def internal(error):
-    return render_template('500.html', title='500'), 500
-
+@app.route('/logout')
+def logout():
+    session.pop('userLogin')
+    return redirect('login')
 
 if __name__ == '__main__':
     app.run(debug=True)
