@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, url_for, flash
+from flask import Flask, render_template, session, redirect
 from flask_bs4 import Bootstrap
 from flask_moment import Moment
 from datetime import datetime
@@ -17,14 +17,34 @@ class LoginForm(FlaskForm):
     userPassword = PasswordField("Hasło:", validators=[DataRequired()])
     submit = SubmitField("Zaloguj")
 
+users = {
+    1:{
+        'userLogin':'kacper',
+        'userPass':'123qweasd',
+        'firstName':'Kacper',
+        'lastName':'Nowak'
+    },
+}
+
 @app.route('/')
 def index():
     return render_template('index.html', title="Strona głown")
 
-@app.route('/login')
+@app.route('/login', method=["POST","GET"])
 def login():
     loginForm = LoginForm()
-    return render_template("login.html", title="Logowanie", form=loginForm)
+    if loginForm.validate_on_submit():
+        userLogin = loginForm.userLogin.data
+        userPassword = loginForm.userPassword.data
+        if(userLogin == users[1]['userLogin'] and userPassword == users[1]['userPass']):
+            session['userLogin'] = userLogin
+            return redirect('dashboard')
+    return render_template("login.html", title="Logowanie", form=loginForm, userLogin=session.get('userLogin'))
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template("dashboard", title="Dashboard", userLogin=session.get("userLogin"))
+
 
 @app.errorhandler(404)
 def pageNotFound(error):
