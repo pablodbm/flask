@@ -1,0 +1,32 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+    {{ moment.locale('pl') }}
+{% endblock %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block navbar %}
+    {% include  "includes/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-2">
+        {% if message %}
+            <h2>{{ message }}</h2>
+        {% endif %}
+        <form method="post" action="/function">
+            {{ userForm.hidden_tag() }}
+            {{ userForm.a.label(class_="form_label") }}{{ userForm.a(class_="form-control mb-3")}}
+            {{ userForm.b.label(class_="form_label") }}{{ userForm.b(class_="form-control mb-3")}}
+            {{ userForm.c.label(class_="form_label") }}{{ userForm.c(class_="form-control mb-3")}}
+            {{ userForm.submit(class_="btn btn-success") }}
+        </form>
+
+        {#        {{ wtf.quick_form(userForm, action="/user" )}}#}
+    </div>
+
+{% endblock %}
