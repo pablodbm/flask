@@ -1,39 +1,40 @@
 {% extends "bootstrap/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% block title %} {{title}} {% endblock %}
+
 {% block scripts %}
     {{ super() }}
+    {{ moment.include_moment() }}
+    {{ moment.locale('pl') }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 {% endblock %}
 
-{% block title %}
-{{title}}
-{% endblock %}
 {% block navbar %}
-    {% if userLogin %}
-        {% include  "includes/navbar-logout.html" %}
+    {%  if userLogin %}
+    {% include "includes/navbar-logged.html" %}
     {% else %}
-        {% include  "includes/navbar.html" %}
+    {% include "includes/navbar-logged.html" %}
     {% endif %}
 {% endblock %}
-{% block content %}
 
+{% block content %}
     <div class="container mt-2">
+      {% if userLogin %}
+        <h1>Jesteś zalogowany jako {{ userLogin }}</h1>
+      {% else %}
         <div class="row">
             <div class="col-lg-4 offset-lg-4">
-                {% if userLogin %}
-                <h1>Jesteś zalogowany jako {{userLogin}}</h1>
-                {% else %}
                 <form action="/login" method="post">
                     {{ form.hidden_tag() }}
-                    {{ form.userLogin.label(class_='form-label') }}
-                    {{ form.userLogin(class_='form-control') }}
-                    {{ form.userPassword.label(class_='form-label') }}
-                    {{ form.userPassword(class_='form-control') }}
-                    {{ form.submit(class_='btn btn-dark mt-3 float-end') }}
+                    {{ form.userLogin.label(class_="form-label") }}
+                    {{ form.userLogin(class_="form-control") }}
+                    {{ form.userPassword.label(class_="form-label") }}
+                    {{ form.userPassword(class_="form-control") }}
+                    {{ form.submit(class_="btn btn-dark mt-3 float-end") }}
                 </form>
-                {% endif %}
             </div>
         </div>
+        {% endif %}
     </div>
-
+    {% include "includes/footer.html" %}
 {% endblock %}
-
