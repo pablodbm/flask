@@ -1,0 +1,32 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block scripts %}
+    {{ super() }}
+{% endblock %}
+
+{% block title %}
+{{title}}
+{% endblock %}
+{% block content %}
+    <div class="container mt-2">
+        <form method="post" action="/">
+            {{ userForm.hidden_tag() }}
+            {{ userForm.city.label(class_="form_label") }}{{ userForm.city(class_="form-control mb-3")}}
+            {{ userForm.submit(class_="btn btn-success") }}
+        </form>
+
+        </div>
+    {% if hasData == "true" %}
+        <p>Data pomiaru: {{ dataPomiaru }}</p>
+        <p>Godzina pomiaru: {{ godzinaPomiaru }}</p>
+        <p>Temperatura: {{ temperatura }}</p>
+        <p>Prędkość wiatru: {{ predkoscWiatru }}</p>
+        <p>Kierunek wiatru: {{ kierunekWiatru }}</p>
+        <p>Wilgotność względna: {{ wilgotnoscWzgledna }}</p>
+        <p>Suma opadu: {{ sumaOpadu }}</p>
+        <p>Ciśnienie: {{ cisnienie }}</p>
+    {% endif %}
+    {% if error == "true" %}
+        <h1>Wprowadź poprawną nazwę miasta</h1>
+    {% endif %}
+{% endblock %}

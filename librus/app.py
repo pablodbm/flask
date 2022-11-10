@@ -62,7 +62,7 @@ def countAverage(subjectValue, termValue):
 @app.route('/')
 def index():
     return render_template(
-        'index.html',
+        'weather.html',
         title='Strona główna',
         date=date
     )

@@ -26,7 +26,7 @@ class Kwadratowa(FlaskForm):
 @app.route('/')
 def index():
     userForm = NameForm()
-    return render_template('index.html', title="Strona głowna", currentTime=datetime.utcnow(), userForm=userForm)
+    return render_template('weather.html', title="Strona głowna", currentTime=datetime.utcnow(), userForm=userForm)
 
 @app.route('/user', methods=['POST'])
 def userName():
@@ -34,7 +34,7 @@ def userName():
     return render_template('user.html', title="Użytkownik", userName=userName)
 @app.route('/user/<name>')
 def user(name):
-    return render_template('index.html', title="Uzytkownik", name=name)
+    return render_template('weather.html', title="Uzytkownik", name=name)
 
 @app.errorhandler(404)
 def pageNotFound(error):
